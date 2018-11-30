@@ -4,13 +4,15 @@
 #
 Name     : ipvsadm
 Version  : 1.29
-Release  : 1
+Release  : 2
 URL      : https://mirrors.edge.kernel.org/pub/linux/utils/kernel/ipvsadm/ipvsadm-1.29.tar.xz
 Source0  : https://mirrors.edge.kernel.org/pub/linux/utils/kernel/ipvsadm/ipvsadm-1.29.tar.xz
 Summary  : Utility to administer the Linux Virtual Server
 Group    : Development/Tools
 License  : GPL-2.0
-Requires: ipvsadm-bin
+Requires: ipvsadm-bin = %{version}-%{release}
+Requires: ipvsadm-license = %{version}-%{release}
+Requires: ipvsadm-man = %{version}-%{release}
 BuildRequires : pkgconfig(libnl-3.0)
 BuildRequires : popt-dev
 
@@ -21,17 +23,27 @@ offered by the latest Linux kernel 2.6.x.
 %package bin
 Summary: bin components for the ipvsadm package.
 Group: Binaries
+Requires: ipvsadm-license = %{version}-%{release}
+Requires: ipvsadm-man = %{version}-%{release}
 
 %description bin
 bin components for the ipvsadm package.
 
 
-%package doc
-Summary: doc components for the ipvsadm package.
-Group: Documentation
+%package license
+Summary: license components for the ipvsadm package.
+Group: Default
 
-%description doc
-doc components for the ipvsadm package.
+%description license
+license components for the ipvsadm package.
+
+
+%package man
+Summary: man components for the ipvsadm package.
+Group: Default
+
+%description man
+man components for the ipvsadm package.
 
 
 %prep
@@ -42,21 +54,22 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1531164895
+export SOURCE_DATE_EPOCH=1543601570
 make
 
 %install
-export SOURCE_DATE_EPOCH=1531164895
+export SOURCE_DATE_EPOCH=1543601570
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/ipvsadm
-cp debian/copyright %{buildroot}/usr/share/doc/ipvsadm/debian_copyright
+mkdir -p %{buildroot}/usr/share/package-licenses/ipvsadm
+cp debian/copyright %{buildroot}/usr/share/package-licenses/ipvsadm/debian_copyright
 %make_install
+## install_append content
+mkdir -p %{buildroot}/usr/share
+mv %{buildroot}/usr/man %{buildroot}/usr/share/
+## install_append end
 
 %files
 %defattr(-,root,root,-)
-/usr/man/man8/ipvsadm-restore.8
-/usr/man/man8/ipvsadm-save.8
-/usr/man/man8/ipvsadm.8
 
 %files bin
 %defattr(-,root,root,-)
@@ -64,6 +77,12 @@ cp debian/copyright %{buildroot}/usr/share/doc/ipvsadm/debian_copyright
 /usr/bin/ipvsadm-restore
 /usr/bin/ipvsadm-save
 
-%files doc
+%files license
 %defattr(0644,root,root,0755)
-%doc /usr/share/doc/ipvsadm/*
+/usr/share/package-licenses/ipvsadm/debian_copyright
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man8/ipvsadm-restore.8
+/usr/share/man/man8/ipvsadm-save.8
+/usr/share/man/man8/ipvsadm.8
