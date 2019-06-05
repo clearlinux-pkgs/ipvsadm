@@ -4,7 +4,7 @@
 #
 Name     : ipvsadm
 Version  : 1.29
-Release  : 2
+Release  : 3
 URL      : https://mirrors.edge.kernel.org/pub/linux/utils/kernel/ipvsadm/ipvsadm-1.29.tar.xz
 Source0  : https://mirrors.edge.kernel.org/pub/linux/utils/kernel/ipvsadm/ipvsadm-1.29.tar.xz
 Summary  : Utility to administer the Linux Virtual Server
